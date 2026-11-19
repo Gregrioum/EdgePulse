@@ -49,6 +49,8 @@ EdgePulse shifts its ambient glow, double-ring status dot, meter bars, border ac
 
 ## Installation and Package Contents
 
+> **Download the latest installers and portable packages from [GitHub Releases (`v1.0.0`)](https://github.com/Gregrioum/EdgePulse/releases/latest)** — or get EdgePulse on **[Gumroad](https://gregrioum.gumroad.com/l/edgepulse-windows-hud)**.
+
 EdgePulse ships as self-contained single-file packages for both **Intel/AMD (`win-x64`)** and **Windows on Arm (`win-arm64`)**—no separate `.NET` runtime download required.
 
 | File | Size | Description |
