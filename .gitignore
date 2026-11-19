@@ -1,0 +1,6 @@
+work/
+release/
+src/**/bin/
+src/**/obj/
+Data/
+*.user
