@@ -1,4 +1,4 @@
-# EdgePulse — Windows 11 Loupe HUD Performance Widget (v1.0.0)
+# EdgePulse — Windows 11 Performance & Thermal HUD (v1.0.0)
 
 > **A compact, zero-bloat glassmorphic floating performance HUD for Windows 11 (x64 & ARM64).**  
 > Self-contained native `.NET 10` WPF app | 3 adaptive layouts (`Micro Strip`, `Compact Rail`, `Dual Row`) | Live CPU & GPU thermal pill badges (`°C` / `°F`) | 1-click live Detail Cards | Click-through & fullscreen auto-hide.
