@@ -7,7 +7,7 @@
 #ifndef Destination
   #define Destination "..\release"
 #endif
-#define AppVersion "1.0.0"
+#define AppVersion "1.2.0"
 
 [Setup]
 AppId={{E40B417F-2F02-40C0-AC44-36E6EC3F7DD8}

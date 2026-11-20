@@ -45,7 +45,7 @@ public static class Verification
             var store = new SettingsStore(Path.Combine(directory, "roundtrip"));
             store.Save(new AppSettings { Layout = WidgetLayout.DualRow, Opacity = .65, LockPosition = true, ClickThrough = true, HideInFullscreen = true, Fahrenheit = true, GpuId = "test", HorizontalAnchor = "left", OffsetX = 40 });
             var restored = store.Load();
-            Check("Settings survive restart", restored.Layout == WidgetLayout.DualRow && restored.Opacity == .65 && restored.LockPosition && restored.ClickThrough && restored.HideInFullscreen && restored.Fahrenheit && restored.GpuId == "test" && restored.OffsetX == 40);
+            Check("Settings survive restart and ClickThrough defaults to off", restored.Layout == WidgetLayout.DualRow && restored.Opacity == .65 && restored.LockPosition && !restored.ClickThrough && restored.HideInFullscreen && restored.Fahrenheit && restored.GpuId == "test" && restored.OffsetX == 40);
             File.WriteAllText(store.FilePath, "{invalid-json"); Check("Corrupt settings recover safely", store.Load().Layout == WidgetLayout.CompactRail);
 
             // Normal load renders

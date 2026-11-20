@@ -62,7 +62,7 @@ public sealed class WidgetSurface : FrameworkElement
     private static readonly Typeface UiRegular = new(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
     private static readonly Typeface UiMedium = new(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
     private static readonly Typeface MonoBold = new(new FontFamily("Consolas"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
-    private static readonly Typeface FluentIcons = new(new FontFamily("Segoe Fluent Icons"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+    private static readonly Typeface FluentIcons = new(new FontFamily("Segoe Fluent Icons, Segoe MDL2 Assets"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
 
     private readonly AppSettings settings;
     private Snapshot data = Snapshot.Empty;

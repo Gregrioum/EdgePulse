@@ -26,16 +26,18 @@ public sealed class SettingsWindow : Window
     {
         this.main = main; settings = main.Settings; this.verification = verification;
         Style = (Style)Application.Current.FindResource(typeof(Window));
-        Title = "EdgePulse · Settings"; Width = 545; Height = 660; MinWidth = 470; MinHeight = 560;
+        double maxWorkHeight = SystemParameters.WorkArea.Height > 0 ? Math.Max(600, SystemParameters.WorkArea.Height - 36) : 750;
+        Title = "EdgePulse · Settings"; Width = 560; Height = verification ? 750 : Math.Min(750, maxWorkHeight); MinWidth = 500; MinHeight = 580;
         WindowStartupLocation = WindowStartupLocation.CenterOwner; Owner = main; ShowInTaskbar = true;
-        var outer = new DockPanel { Margin = new Thickness(24) };
+        UseLayoutRounding = true; SnapsToDevicePixels = true;
+        var outer = new DockPanel { Margin = new Thickness(24, 20, 24, 20) };
 
         // Header styled after Colour Picker v1.2.1
-        var heading = new StackPanel { Margin = new Thickness(0, 0, 0, 16) };
+        var heading = new StackPanel { Margin = new Thickness(0, 0, 0, 14) };
         var titleRow = new StackPanel { Orientation = Orientation.Horizontal };
-        var dotGrid = new Grid { Width = 18, Height = 18, Margin = new Thickness(0, 0, 10, 0), VerticalAlignment = VerticalAlignment.Center };
-        dotGrid.Children.Add(new Ellipse { Width = 16, Height = 16, Fill = new SolidColorBrush(Color.FromArgb(75, 99, 102, 241)) });
-        dotGrid.Children.Add(new Ellipse { Width = 11, Height = 11, Fill = new SolidColorBrush(Color.FromRgb(99, 102, 241)), Stroke = Brushes.White, StrokeThickness = 1 });
+        var dotGrid = new Grid { Width = 20, Height = 20, Margin = new Thickness(0, 0, 10, 0), VerticalAlignment = VerticalAlignment.Center };
+        dotGrid.Children.Add(new Ellipse { Width = 16, Height = 16, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Fill = new SolidColorBrush(Color.FromArgb(75, 99, 102, 241)) });
+        dotGrid.Children.Add(new Ellipse { Width = 11, Height = 11, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Fill = new SolidColorBrush(Color.FromRgb(99, 102, 241)), Stroke = Brushes.White, StrokeThickness = 1.2 });
         titleRow.Children.Add(dotGrid);
         titleRow.Children.Add(new TextBlock { Text = "EdgePulse", FontSize = 22, FontWeight = FontWeights.Bold, VerticalAlignment = VerticalAlignment.Center });
         var badge = new Border
@@ -47,14 +49,14 @@ public sealed class SettingsWindow : Window
             Background = new SolidColorBrush(Color.FromArgb(36, 56, 189, 248)),
             BorderBrush = new SolidColorBrush(Color.FromArgb(105, 125, 211, 252)),
             BorderThickness = new Thickness(1),
-            Child = new TextBlock { Text = "F2 · HUD", FontFamily = new FontFamily("Consolas"), FontSize = 11, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Color.FromRgb(186, 230, 253)) }
+            Child = new TextBlock { Text = "v1.2 · F2 · HUD", FontFamily = new FontFamily("Consolas"), FontSize = 11, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Color.FromRgb(186, 230, 253)) }
         };
         titleRow.Children.Add(badge);
         heading.Children.Add(titleRow);
-        heading.Children.Add(new TextBlock { Text = "Glassmorphic Loupe HUD · Normal & High-Load Telemetry", Foreground = Ui.Muted, Margin = new Thickness(0, 5, 0, 0) });
+        heading.Children.Add(new TextBlock { Text = "Glassmorphic Loupe HUD · Normal & High-Load Telemetry", Foreground = Ui.Muted, Margin = new Thickness(0, 4, 0, 0) });
         DockPanel.SetDock(heading, Dock.Top); outer.Children.Add(heading);
 
-        var footer = new DockPanel { Margin = new Thickness(0, 16, 0, 0) };
+        var footer = new DockPanel { Margin = new Thickness(0, 14, 0, 0) };
         var close = new Button
         {
             Content = "Done",
@@ -83,13 +85,17 @@ public sealed class SettingsWindow : Window
         UpdateDevices(main.Latest);
     }
 
-    private static ScrollViewer Scroll(UIElement content) => new() { Content = content, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled };
+    private static ScrollViewer Scroll(FrameworkElement content)
+    {
+        content.Margin = new Thickness(0, 0, 10, 8);
+        return new() { Content = content, Padding = new Thickness(0, 0, 4, 0), VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled };
+    }
 
     private StackPanel General()
     {
         var panel = new StackPanel();
         Label(panel, "Layout");
-        layoutCombo = new ComboBox { Name = "LayoutSelector", SelectedIndex = (int)settings.Layout, Margin = new Thickness(0, 0, 0, 14) };
+        layoutCombo = new ComboBox { Name = "LayoutSelector", SelectedIndex = (int)settings.Layout, Margin = new Thickness(0, 0, 0, 12) };
         layoutCombo.Items.Add("Micro Strip · 34 px · one line");
         layoutCombo.Items.Add("Compact Rail · 50 px · thin meters");
         layoutCombo.Items.Add("Dual Row · 64 px · disk activity visible");
@@ -98,11 +104,11 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(layoutCombo);
 
         opacityLabel = Label(panel, "Background opacity · " + (settings.Opacity * 100).ToString("0") + "%");
-        opacitySlider = new Slider { Name = "OpacitySlider", Minimum = 45, Maximum = 100, Value = settings.Opacity * 100, TickFrequency = 5, IsSnapToTickEnabled = true, Margin = new Thickness(0, 0, 0, 14) };
+        opacitySlider = new Slider { Name = "OpacitySlider", Minimum = 45, Maximum = 100, Value = settings.Opacity * 100, TickFrequency = 5, IsSnapToTickEnabled = true, Margin = new Thickness(0, 0, 0, 12) };
         opacitySlider.ValueChanged += (_, _) => { if (!syncingSettings) { settings.Opacity = opacitySlider.Value / 100; opacityLabel.Text = "Background opacity · " + opacitySlider.Value.ToString("0") + "%"; Apply(); } };
         panel.Children.Add(opacitySlider);
 
-        var row = new Grid { Margin = new Thickness(0, 0, 0, 13) }; row.ColumnDefinitions.Add(new()); row.ColumnDefinitions.Add(new());
+        var row = new Grid { Margin = new Thickness(0, 0, 0, 11) }; row.ColumnDefinitions.Add(new()); row.ColumnDefinitions.Add(new());
         var left = new StackPanel { Margin = new Thickness(0, 0, 10, 0) }; Label(left, "Refresh interval");
         refreshCombo = new ComboBox { ItemsSource = new[] { "1 second", "2 seconds", "5 seconds" }, SelectedIndex = settings.RefreshSeconds == 1 ? 0 : settings.RefreshSeconds == 2 ? 1 : 2 };
         refreshCombo.SelectionChanged += (_, _) => { if (!syncingSettings) { settings.RefreshSeconds = new[] { 1, 2, 5 }[Math.Max(0, refreshCombo.SelectedIndex)]; Apply(); } };
@@ -117,7 +123,7 @@ public sealed class SettingsWindow : Window
         topMostCheck = Check(panel, "Keep widget above other windows", settings.AlwaysOnTop, value => settings.AlwaysOnTop = value);
         snapCheck = Check(panel, "Snap to screen edges", settings.SnapToEdges, value => settings.SnapToEdges = value);
         lockCheck = Check(panel, "Lock widget position", settings.LockPosition, value => settings.LockPosition = value);
-        clickThroughCheck = Check(panel, "Click-through overlay mode (use tray icon to toggle back)", settings.ClickThrough, value => settings.ClickThrough = value);
+        clickThroughCheck = Check(panel, "Click-through overlay mode (off by default on startup; use tray icon to toggle)", settings.ClickThrough, value => settings.ClickThrough = value);
         fullscreenCheck = Check(panel, "Automatically hide when a fullscreen app or game is active", settings.HideInFullscreen, value => settings.HideInFullscreen = value);
 
         var startup = new CheckBox { Content = "Start EdgePulse when I sign in to Windows", IsChecked = !verification && StartupSetting.Enabled, Name = "StartupCheckbox" };
@@ -127,18 +133,18 @@ public sealed class SettingsWindow : Window
             try { StartupSetting.Set(startup.IsChecked == true); }
             catch (Exception e) { main.Store.Log(e); startup.IsChecked = StartupSetting.Enabled; MessageBox.Show(this, "Windows could not save the startup setting. " + e.Message, "EdgePulse", MessageBoxButton.OK, MessageBoxImage.Information); }
         }; panel.Children.Add(startup);
-        if (main.Store.Portable) panel.Children.Add(new TextBlock { Text = "For startup, keep the portable folder in the same location.", FontSize = 11, Foreground = Ui.Muted, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 1, 0, 7) });
-        var reset = new Button { Content = "Reset widget position", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 12, 0, 0) }; reset.Click += (_, _) => main.ResetPosition(); panel.Children.Add(reset);
+        if (main.Store.Portable) panel.Children.Add(new TextBlock { Text = "For startup, keep the portable folder in the same location.", FontSize = 11, Foreground = Ui.Muted, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 1, 0, 5) });
+        var reset = new Button { Content = "Reset widget position", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 10, 0, 2) }; reset.Click += (_, _) => main.ResetPosition(); panel.Children.Add(reset);
         return panel;
     }
 
     private StackPanel Devices()
     {
         var panel = new StackPanel();
-        Label(panel, "Graphics adapter"); gpuSelect.Margin = new Thickness(0, 0, 0, 8); panel.Children.Add(gpuSelect);
+        Label(panel, "Graphics adapter"); gpuSelect.Margin = new Thickness(0, 0, 0, 6); panel.Children.Add(gpuSelect);
         panel.Children.Add(Note("Automatic selects the adapter with the most dedicated memory. Integrated graphics show shared GPU memory when dedicated VRAM is small."));
         gpuSelect.SelectionChanged += (_, _) => { if (!updatingDevices && gpuSelect.SelectedItem is Choice c) { settings.GpuId = c.Id; Apply(); } };
-        Label(panel, "Network adapter", true); networkSelect.Margin = new Thickness(0, 0, 0, 8); panel.Children.Add(networkSelect);
+        Label(panel, "Network adapter", true); networkSelect.Margin = new Thickness(0, 0, 0, 6); panel.Children.Add(networkSelect);
         panel.Children.Add(Note("Automatic totals active physical adapters. Choose a VPN or virtual adapter explicitly if you want its traffic."));
         networkSelect.SelectionChanged += (_, _) => { if (!updatingDevices && networkSelect.SelectedItem is Choice c) { settings.NetworkId = c.Id; Apply(); } };
         bitsCheck = Check(panel, "Show network speed in bits per second", settings.NetworkInBits, value => settings.NetworkInBits = value);
@@ -146,7 +152,7 @@ public sealed class SettingsWindow : Window
         Label(panel, "Visible HUD metrics", true);
         var metricsGrid = new Grid { Margin = new Thickness(0, 0, 0, 6) };
         metricsGrid.ColumnDefinitions.Add(new()); metricsGrid.ColumnDefinitions.Add(new());
-        var col1 = new StackPanel(); var col2 = new StackPanel();
+        var col1 = new StackPanel { Margin = new Thickness(0, 0, 8, 0) }; var col2 = new StackPanel { Margin = new Thickness(8, 0, 0, 0) };
         showCpuCheck = Check(col1, "Show CPU utilization", settings.ShowCpu, value => settings.ShowCpu = value);
         showGpuCheck = Check(col1, "Show GPU utilization", settings.ShowGpu, value => settings.ShowGpu = value);
         showMemCheck = Check(col1, "Show RAM usage", settings.ShowMemory, value => settings.ShowMemory = value);
@@ -157,7 +163,7 @@ public sealed class SettingsWindow : Window
         panel.Children.Add(metricsGrid);
 
         panel.Children.Add(Note("Local and external volumes appear automatically. Click a drive for capacity, activity, and read/write speeds. Extra drives stay accessible through +N."));
-        var refresh = new Button { Content = "Rescan devices", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 14, 0, 0) }; refresh.Click += (_, _) => main.Telemetry.RefreshDevices(); panel.Children.Add(refresh);
+        var refresh = new Button { Content = "Rescan devices", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 10, 0, 2) }; refresh.Click += (_, _) => main.Telemetry.RefreshDevices(); panel.Children.Add(refresh);
         return panel;
     }
 
@@ -173,7 +179,7 @@ public sealed class SettingsWindow : Window
         var card = new Border
         {
             CornerRadius = new CornerRadius(6),
-            Padding = new Thickness(12, 10, 12, 10),
+            Padding = new Thickness(12, 9, 12, 9),
             Background = new SolidColorBrush(Color.FromArgb(22, 255, 255, 255)),
             BorderBrush = new SolidColorBrush(Color.FromArgb(55, 125, 211, 252)),
             BorderThickness = new Thickness(1),
@@ -183,7 +189,8 @@ public sealed class SettingsWindow : Window
 
         Label(panel, "CPU sensor setup", true);
         panel.Children.Add(Note("On supported Intel/AMD PCs, CPU temperatures use LibreHardwareMonitor and the signed PawnIO driver. Installing the driver requires Windows administrator approval. It stays installed separately from the portable widget; remove it through Windows Settings → Apps if no longer needed."));
-        var install = new Button { Content = "Set up CPU sensor driver…", IsEnabled = CpuTemperatureSensor.Supported && !verification, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 12, 0, 8) };
+        var btnRow = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 10, 0, 6) };
+        var install = new Button { Content = "Set up CPU sensor driver…", IsEnabled = CpuTemperatureSensor.Supported && !verification, HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 0, 10, 0) };
         install.Click += async (_, _) =>
         {
             install.IsEnabled = false; install.Content = "Downloading verified sensor driver…";
@@ -191,16 +198,18 @@ public sealed class SettingsWindow : Window
             catch (Exception e) { main.Store.Log(e); MessageBox.Show(this, "Sensor setup was not completed. " + e.Message, "EdgePulse", MessageBoxButton.OK, MessageBoxImage.Information); }
             finally { install.IsEnabled = true; install.Content = "Set up CPU sensor driver…"; }
         };
-        panel.Children.Add(install);
+        var rescan = new Button { Content = "Rescan sensors", HorizontalAlignment = HorizontalAlignment.Left };
+        rescan.Click += (_, _) => main.Telemetry.RefreshDevices();
+        btnRow.Children.Add(install);
+        btnRow.Children.Add(rescan);
+        panel.Children.Add(btnRow);
         panel.Children.Add(Note("Downloads the official PawnIO 2.1 installer only when you click setup. GPU temperature uses Windows directly. CPU temperature is currently unavailable on ARM64."));
-        var rescan = new Button { Content = "Rescan sensors", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 14, 0, 0) };
-        rescan.Click += (_, _) => main.Telemetry.RefreshDevices(); panel.Children.Add(rescan);
         return panel;
     }
 
     private StackPanel About()
     {
-        var panel = new StackPanel(); Label(panel, "EdgePulse 1.1.0 · Loupe HUD Edition");
+        var panel = new StackPanel(); Label(panel, "EdgePulse 1.2.0 · Loupe HUD Edition");
         panel.Children.Add(Note("A compact, local glassmorphic performance widget for Windows 11. No accounts, telemetry, or manufacturer utilities are required."));
         Label(panel, "Using the widget", true);
         panel.Children.Add(Note("Drag the left status dot to move. Alt+drag anywhere also works. Click the gear or press F2 for Settings. Right-click the widget or tray icon for layout, position lock, click-through, hide, and quit controls."));
@@ -274,7 +283,7 @@ public sealed class SettingsWindow : Window
         return c;
     }
 
-    private static TextBlock Label(Panel panel, string label, bool space = false) { var text = new TextBlock { Text = label, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, space ? 18 : 0, 0, 7) }; panel.Children.Add(text); return text; }
+    private static TextBlock Label(Panel panel, string label, bool space = false) { var text = new TextBlock { Text = label, FontWeight = FontWeights.SemiBold, Margin = new Thickness(0, space ? 14 : 0, 0, 6) }; panel.Children.Add(text); return text; }
     private static TextBlock Note(string text) => new() { Text = text, TextWrapping = TextWrapping.Wrap, Foreground = Ui.Muted, FontSize = 12, LineHeight = 19 };
     private sealed record Choice(string Id, string Label) { public override string ToString() => Label; }
 }

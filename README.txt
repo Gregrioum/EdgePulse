@@ -1,4 +1,4 @@
-EdgePulse 1.1.0 (Loupe HUD Edition)
+EdgePulse 1.2.0 (Loupe HUD Edition)
 Compact glassmorphic performance widget for Windows 11
 
 QUICK START
@@ -40,7 +40,8 @@ Compact Rail: 50 logical pixels tall; the default layout.
 Dual Row: 64 logical pixels tall; capacity and disk activity stay visible.
 
 Settings includes layout, background opacity, 1/2/5-second refresh, text size,
-always-on-top, edge snapping, position lock, click-through overlay mode,
+always-on-top, edge snapping, position lock, click-through overlay mode (always
+defaults to off at Windows sign-in and app startup),
 automatic hiding when a fullscreen app/game is focused, launch at Windows
 sign-in, graphics-adapter selection, network-adapter selection, network units,
 individual metric visibility (CPU, GPU, RAM, VRAM, Network, Drives,

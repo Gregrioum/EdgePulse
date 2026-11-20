@@ -22,13 +22,16 @@ public sealed class DetailWindow : Window
         Style = (Style)Application.Current.FindResource(typeof(Window));
         Title = "EdgePulse · Details"; Width = 470; Height = 415; MinWidth = 380; MinHeight = 300;
         Owner = main; WindowStartupLocation = WindowStartupLocation.CenterScreen; Topmost = main.Settings.AlwaysOnTop;
+        UseLayoutRounding = true; SnapsToDevicePixels = true;
 
         var outer = new DockPanel { Margin = new Thickness(22) };
 
         // Header matching Colour Picker v1.2.1
         var header = new DockPanel { Margin = new Thickness(0, 0, 0, 14) };
-        var dotWrap = new Grid { Width = 18, Height = 18, Margin = new Thickness(0, 0, 9, 0), VerticalAlignment = VerticalAlignment.Center };
-        dotWrap.Children.Add(new Ellipse { Width = 16, Height = 16, Fill = new SolidColorBrush(Color.FromArgb(65, 99, 102, 241)) });
+        var dotWrap = new Grid { Width = 20, Height = 20, Margin = new Thickness(0, 0, 9, 0), VerticalAlignment = VerticalAlignment.Center };
+        dotWrap.Children.Add(new Ellipse { Width = 16, Height = 16, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Fill = new SolidColorBrush(Color.FromArgb(65, 99, 102, 241)) });
+        statusDot.HorizontalAlignment = HorizontalAlignment.Center;
+        statusDot.VerticalAlignment = VerticalAlignment.Center;
         dotWrap.Children.Add(statusDot);
         DockPanel.SetDock(dotWrap, Dock.Left);
         header.Children.Add(dotWrap);

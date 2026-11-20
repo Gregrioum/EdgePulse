@@ -13,6 +13,7 @@ public sealed class AppSettings
     public double TextScale { get; set; } = 1;
     public bool AlwaysOnTop { get; set; } = true;
     public bool LockPosition { get; set; }
+    [JsonIgnore]
     public bool ClickThrough { get; set; }
     public bool HideInFullscreen { get; set; }
     public bool SnapToEdges { get; set; } = true;
@@ -66,7 +67,7 @@ public sealed class SettingsStore
     }
     public AppSettings Load()
     {
-        try { var s = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath), Json) ?? new(); s.Normalize(); return s; }
+        try { var s = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath), Json) ?? new(); s.ClickThrough = false; s.Normalize(); return s; }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or JsonException or NotSupportedException) { return new(); }
     }
     public void Save(AppSettings settings)

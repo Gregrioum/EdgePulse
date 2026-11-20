@@ -1,9 +1,10 @@
 param(
     [string]$DotNet = 'dotnet',
-    [string]$Iscc = 'ISCC.exe',
+    [string]$Iscc = 'C:\Users\wbchoi\AppData\Local\Programs\Inno Setup 6\ISCC.exe',
     [string[]]$Architectures = @('x64', 'arm64')
 )
 $ErrorActionPreference = 'Stop'
+if (-not (Test-Path -LiteralPath $Iscc)) { $Iscc = 'ISCC.exe' }
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $releaseRoot = Join-Path $projectRoot 'release'
@@ -14,7 +15,7 @@ foreach ($architecture in $Architectures) {
     $publishRoot = Join-Path $projectRoot ('work\publish\' + $runtimeId)
     & $DotNet publish (Join-Path $projectRoot 'src\EdgePulse\EdgePulse.csproj') -c Release -r $runtimeId --self-contained true -o $publishRoot --nologo
     if ($LASTEXITCODE -ne 0) { throw ('Publish failed: ' + $runtimeId) }
-    $portableRoot = Join-Path $releaseRoot ('EdgePulse-1.0.0-' + $runtimeId + '-Portable')
+    $portableRoot = Join-Path $releaseRoot ('EdgePulse-1.2.0-' + $runtimeId + '-Portable')
     New-Item -ItemType Directory -Path $portableRoot -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $publishRoot 'EdgePulse.exe') -Destination $portableRoot
     foreach ($name in @('README.txt','LICENSE.txt','THIRD-PARTY-NOTICES.txt')) { Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $portableRoot }

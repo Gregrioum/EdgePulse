@@ -1,9 +1,16 @@
-# EdgePulse_Windows 11 Performance & Thermal HUD (v1.0.0)
+# EdgePulse_Windows 11 Performance & Thermal HUD (v1.2.0)
 
 > **A compact, zero-bloat glassmorphic floating performance HUD for Windows 11 (x64 & ARM64).**  
-> Self-contained native `.NET 10` WPF app | 3 adaptive layouts (`Micro Strip`, `Compact Rail`, `Dual Row`) | Live CPU & GPU thermal pill badges (`°C` / `°F`) | 1-click live Detail Cards | Click-through & fullscreen auto-hide.
+> Self-contained native WPF app | 3 adaptive layouts (`Micro Strip`, `Compact Rail`, `Dual Row`) | Live CPU & GPU thermal pill badges (`°C` / `°F`) | 1-click live Detail Cards | Click-through & fullscreen auto-hide.
 
 ![Cover Banner](./Screenshots/00_Gumroad_Cover_Hero_1280x720.png)
+
+---
+
+## What's New in v1.2.0
+
+* **Click-Through Overlay Resets to Off on Startup:** Click-through overlay mode now always defaults to **OFF (`false`)** whenever Windows starts up or EdgePulse launches, preventing the widget from starting in an unclickable state after a reboot.
+* **Settings Window (`F2`) Layout & DPI Overhaul:** Expanded and balanced the Settings window layout (`560 × 750`, automatically clamped to monitor work-area height) with device-pixel rounding (`UseLayoutRounding` / `SnapsToDevicePixels`), concentric status indicator alignment, slim dark scrollbar styling, and full visibility of all action buttons (`Reset widget position`, `Rescan devices`, `Set up CPU sensor driver…`, `Rescan sensors`) without clipping or scrollbar overlap.
 
 ---
 
@@ -41,7 +48,7 @@ EdgePulse shifts its ambient glow, double-ring status dot, meter bars, border ac
 
 ### 5. Full Customisation, Edge Snapping & Overlay Modes
 * **Edge Snapping & Anchor Memory:** Drag the left status indicator dot (or **`Alt + Drag`** anywhere on the widget) to move. Automatically snaps near monitor work-area edges, avoids the Windows taskbar, and remembers your corner anchor per monitor.
-* **Click-Through Overlay Mode:** Pass mouse clicks straight through the widget to fullscreen apps or games; toggle it back anytime from the Windows System Tray icon.
+* **Click-Through Overlay Mode (Session Toggle):** Pass mouse clicks straight through the widget to fullscreen apps or games; toggle it back anytime from the Windows System Tray icon. Always resets to **off** on Windows startup or app restart so the widget is immediately interactive when your PC boots.
 * **Fullscreen Auto-Hide:** Automatically hides the widget whenever a fullscreen game or video player is in the foreground, and restores it when you exit.
 * **Fine-Tuned Appearance (`F2` Settings):** Adjust background opacity (`45%–100%`), refresh interval (`1s / 2s / 5s`), text scaling (`100% / 110% / 125% / 150%`), Always-on-Top, Position Lock, `°C / °F`, `bps / B/s`, and individual metric visibility toggles.
 
@@ -49,29 +56,29 @@ EdgePulse shifts its ambient glow, double-ring status dot, meter bars, border ac
 
 ## Installation and Package Contents
 
-> **Download the latest installers and portable packages from [GitHub Releases (`v1.0.0`)](https://github.com/Gregrioum/EdgePulse/releases/latest)** — or get EdgePulse on **[Gumroad](https://gregrioum.gumroad.com/l/edgepulse-windows-hud)**.
+> **Download the latest installers and portable packages from [GitHub Releases (`v1.2.0`)](https://github.com/Gregrioum/EdgePulse/releases/latest)** — or get EdgePulse on **[Gumroad](https://gregrioum.gumroad.com/l/edgepulse-windows-hud)**.
 
 EdgePulse ships as self-contained single-file packages for both **Intel/AMD (`win-x64`)** and **Windows on Arm (`win-arm64`)**—no separate `.NET` runtime download required.
 
 | File | Size | Description |
 | :--- | :--- | :--- |
-| **`EdgePulse-1.0.0-win-x64-Setup.exe`** | `~68.9 MB` | **x64 Setup Wizard (Recommended for Intel/AMD):** Per-user install to `%LocalAppData%\Programs\EdgePulse` (no admin rights required), Start Menu shortcut, optional Desktop shortcut & sign-in startup, and Windows Settings uninstaller. |
-| **`EdgePulse-1.0.0-win-x64-Portable.zip`** | `~68.5 MB` | **x64 Portable Archive:** Extract to a writable folder and run `EdgePulse.exe` with `portable.flag` beside it. Stores preferences in `Data\settings.json`. |
-| **`EdgePulse-1.0.0-win-arm64-Setup.exe`** | `~63.6 MB` | **ARM64 Setup Wizard:** Native Windows on Arm installer (per-user, no admin required). |
-| **`EdgePulse-1.0.0-win-arm64-Portable.zip`** | `~63.2 MB` | **ARM64 Portable Archive:** Native Windows on Arm standalone portable package. |
+| **`EdgePulse-1.2.0-win-x64-Setup.exe`** | `~67.7 MB` | **x64 Setup Wizard (Recommended for Intel/AMD):** Per-user install to `%LocalAppData%\Programs\EdgePulse` (no admin rights required), Start Menu shortcut, optional Desktop shortcut & sign-in startup, and Windows Settings uninstaller. |
+| **`EdgePulse-1.2.0-win-x64-Portable.zip`** | `~67.2 MB` | **x64 Portable Archive:** Extract to a writable folder and run `EdgePulse.exe` with `portable.flag` beside it. Stores preferences in `Data\settings.json`. |
+| **`EdgePulse-1.2.0-win-arm64-Setup.exe`** | `~62.8 MB` | **ARM64 Setup Wizard:** Native Windows on Arm installer (per-user, no admin required). |
+| **`EdgePulse-1.2.0-win-arm64-Portable.zip`** | `~62.5 MB` | **ARM64 Portable Archive:** Native Windows on Arm standalone portable package. |
 | **`SHA256SUMS.txt`** | `< 1 KB` | SHA-256 verification checksums for all four release binaries. |
 
 ### System Requirements
 * **OS:** Windows 11 (`10.0.22000` or newer), `x64` or `ARM64`
-* **Dependencies:** **None.** Self-contained `.NET 10` WPF single-file executable.
+* **Dependencies:** **None.** Self-contained WPF single-file executable.
 
 ---
 
 ## Quick-Start Usage Guide
 
 ### Step 1 — Install or Extract
-* **Installer:** Run **`EdgePulse-1.0.0-win-x64-Setup.exe`** (or `win-arm64-Setup.exe` on ARM64 PCs).
-* **Portable:** Extract the entire **`EdgePulse-1.0.0-win-x64-Portable.zip`** (or `win-arm64-Portable.zip`) into a writable folder (do not launch directly from inside a ZIP preview) and keep `portable.flag` next to `EdgePulse.exe`.
+* **Installer:** Run **`EdgePulse-1.2.0-win-x64-Setup.exe`** (or `win-arm64-Setup.exe` on ARM64 PCs).
+* **Portable:** Extract the entire **`EdgePulse-1.2.0-win-x64-Portable.zip`** (or `win-arm64-Portable.zip`) into a writable folder (do not launch directly from inside a ZIP preview) and keep `portable.flag` next to `EdgePulse.exe`.
 
 ### Step 2 — Position & Personalize
 1. Drag the **left pulsing status dot** (or hold **`Alt` + drag** anywhere on the bar) to snap EdgePulse to any monitor corner or edge.
@@ -98,7 +105,7 @@ EdgePulse ships as self-contained single-file packages for both **Intel/AMD (`wi
 
 ## Building from Source & Local Verification
 
-Source code is in `src/EdgePulse` (`.NET 10` WPF + `LibreHardwareMonitorLib 0.9.6`), packaging definition in `packaging/EdgePulse.iss` (Inno Setup), and build automation in `scripts/Build.ps1`:
+Source code is in `src/EdgePulse` (WPF + `LibreHardwareMonitorLib 0.9.6`), packaging definition in `packaging/EdgePulse.iss` (Inno Setup), and build automation in `scripts/Build.ps1`:
 
 ```powershell
 # Build both x64 and arm64 portable ZIPs, installers, and SHA256SUMS.txt

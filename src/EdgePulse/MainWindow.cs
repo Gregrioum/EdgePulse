@@ -32,6 +32,7 @@ public sealed class MainWindow : Window
     public MainWindow(SettingsStore store, bool verification = false)
     {
         this.verification = verification; Store = store; Settings = store.Load();
+        Settings.ClickThrough = false;
         Title = "EdgePulse"; WindowStyle = WindowStyle.None; AllowsTransparency = true; Background = Brushes.Transparent;
         ResizeMode = ResizeMode.NoResize; SizeToContent = SizeToContent.WidthAndHeight; ShowInTaskbar = false; ShowActivated = false; Topmost = Settings.AlwaysOnTop;
         UseLayoutRounding = true; SnapsToDevicePixels = true;

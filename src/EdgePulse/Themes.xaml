@@ -42,8 +42,34 @@
   </Style>
   <Style TargetType="CheckBox">
     <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-    <Setter Property="Margin" Value="0,5,0,5"/>
+    <Setter Property="Margin" Value="0,4,0,4"/>
+    <Setter Property="Padding" Value="6,0,0,0"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  <Style TargetType="ScrollBar">
+    <Setter Property="Width" Value="6"/>
+    <Setter Property="MinWidth" Value="6"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Margin" Value="2,0,0,0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ScrollBar">
+          <Grid Background="Transparent" Width="6">
+            <Track x:Name="PART_Track" IsDirectionReversed="True">
+              <Track.Thumb>
+                <Thumb>
+                  <Thumb.Template>
+                    <ControlTemplate TargetType="Thumb">
+                      <Border Background="#3B4564" CornerRadius="3"/>
+                    </ControlTemplate>
+                  </Thumb.Template>
+                </Thumb>
+              </Track.Thumb>
+            </Track>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
   <Style TargetType="ComboBox">
     <Setter Property="Foreground" Value="#10131C"/>
@@ -59,17 +85,28 @@
     <Setter Property="Background" Value="#10131C"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Padding" Value="0,14,0,0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TabControl">
+          <DockPanel>
+            <StackPanel Orientation="Horizontal" IsItemsHost="True" DockPanel.Dock="Top" Margin="0,0,0,14"/>
+            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/>
+          </DockPanel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
   <Style TargetType="TabItem">
     <Setter Property="Foreground" Value="#94A3B8"/>
     <Setter Property="FontWeight" Value="SemiBold"/>
-    <Setter Property="Padding" Value="15,8"/>
-    <Setter Property="Margin" Value="0,0,4,0"/>
+    <Setter Property="Padding" Value="16,8"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Cursor" Value="Hand"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="TabItem">
-          <Border x:Name="TabBg" Background="#171B29" BorderBrush="#283048" BorderThickness="1" CornerRadius="6" Padding="{TemplateBinding Padding}">
-            <ContentPresenter ContentSource="Header"/>
+          <Border x:Name="TabBg" Background="#171B29" BorderBrush="#283048" BorderThickness="1" CornerRadius="6" Padding="{TemplateBinding Padding}" Margin="0,0,8,0">
+            <ContentPresenter ContentSource="Header" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="True">
